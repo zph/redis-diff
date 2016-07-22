@@ -1,6 +1,7 @@
 # redis-diff
 
-Diff Redis Instances for key and value matching
+Diff Redis Instances for key and value matching. Uses incremental REDIS SCAN
+with cursor to limit the load impact on REDIS.
 
 ## Installation
 
@@ -8,6 +9,7 @@ Diff Redis Instances for key and value matching
 mkdir -p ~/tmp/redis-diff
 cd !$
 GOPATH=$(pwd) go get github.com/zph/redis-diff
+cp bin/redis-diff ~/bin/ # [or somewhere else on your path]
 ```
 
 ## Usage
@@ -35,6 +37,12 @@ key4|valuedb1|valuedb2
 key6|valuedb1|valuedb2
 
 ```
+
+## Performance
+Iterates through src keyspace at ~500 to 1000 keys per second on my development
+machine when pointed at hosted redis instance on separate machine.
+I suspect the bottleneck is the key scanner itself, but I didn't see ways
+to improve that performance.
 
 ## License
 - MIT
